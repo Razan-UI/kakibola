@@ -1,3 +1,6 @@
+web: https://razan-muhammad-kakibola.pbp.cs.ui.ac.id/
+
+
 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step 
     1) Membuat repositori github bernama "kakibola" di lokal dan server github
 
