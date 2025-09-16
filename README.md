@@ -139,4 +139,56 @@ W
     5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step
     
         Ans:
-        1) 
+
+        Prelim: di views.py menambah:
+        from main.models import Product
+        from main.forms import ProductForm
+        from django.http import HttpResponse
+        from django.core import serializers
+
+        agar object object tertentu dapat digunakan oleh fungsi-fungsi di views.py.
+
+        1) pada views.py, membuat fungsi show_xml dan show_json dengan parameter 'request'.  dan isi:
+        prod_list = Product.objects.all()
+        (xml/json)_data = serializers.serialize("(xml/json)", prod_list)
+        return HttpResponse((xml/json)_data), content_type="application/(xml/json)")
+
+        2) masih di views.py, membuat fungsi show_xml_by_id dan show_json_by_id dengan parameter 'request' dan 'pk = prod_id' dengan isi:
+            try:
+            prod_item = Product.objects.filter(pk=prod_id)
+            (xml/json)_data = serializers.serialize("(xml/json)", prod_item)
+            return HttpResponse((xml/json)_data, content_type="application/xml")
+        except Product.DoesNotExist:
+            return HttpResponse(status=404) --jika produk tidak ada, akan mengeluarkan error
+
+        3) di main/urls.py pada urlpatterns, menambah:
+        path('xml/', show_xml, name='show_xml'),
+        path('json/', show_json, name='show_json'),
+        path('xml/<str:prod_id>/', show_xml_by_id, name='show_xml_by_id'),
+        path('json/<str:prod_id>/', show_json_by_id, name='show_json_by_id')
+
+        agar fungsi-fungsi tersebut terjalan dan ditunjukkan ketika (url/xml/id product) dimasukkan ke address bar
+
+        4) membuat file 'forms.py' di folder 'main'. dan mengimport ModelForm dari django.forms dan juga Product dari main.models. Membuat class bernama ProductForm dengan parameter ModelForm dan fields = ["name", "price", "category","description", "thumbnail", "is_featured"]. Fields ini digunakkan agar user/admin dapat memasukkan input ke dalam masing-masing kategori/field saat add_product.html ditunjukkan.
+
+        5) Memodifikasi file 'main.html' dan menambahkan:
+        <a href="{% url 'main:add_product' %}">
+            <button>+ Add Product</button> --berfungsi sebagai tombol penambahan produk, ngeredirect ke fungsi/webpage add_product
+        </a>
+
+        <p><a href="{% url 'main:show_product' prod.id %}"><button>Details</button></a></p> --berfungsi sebagai tombol yang akan meredirect user ke detail produk
+
+        6) Membuat folder 'templates' di root directory dan 'base.html' di dalamnya. .html file ini akan digunakan sebagai dasar dari exstensi webpage lain (seperti add_product dan show_product)
+
+        7) Membuat file 'show_product.html' dan 'add_product.html' di 'main/templates' dan memodifikasinya agar dapat menampilkan nama, harga, deskripsi, dan thumbnail/gambar. Atau untuk kasus add_product, memodifikasinya agar dapat mengirim input. Kedua html ini mengextend dari file base.html.
+
+        8) Menambah:
+        path('add-product/', add_product, name = 'add_product' ),
+        path('product/<str:id>/', show_product, name = 'show_product'),
+        pada urls.py di urlpatterns agar webpage dapat meredirect ke kedua .html tersebut
+
+        EXTRA NOTES:
+        menambah CSRF Trusted Origins dengan url pws pada settings.py 
+    
+    6. Apakah ada feedback untuk asdos di tutorial 2 yang sudah kalian kerjakan?
+        Ans: Tidak pada saat ini, asdos saya (Kak marco) sangat membantu ketika saya mengalami kesulitan (yg sepertinya berdasarkan masalah dari sisi schema di PWS) dan saya hanya mengharap bahwa work ethic tim asdos tetap terjaga
