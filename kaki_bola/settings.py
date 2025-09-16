@@ -29,7 +29,9 @@ SECRET_KEY = 'django-insecure-dae0apawx5r2#9r5@piae2d(ys8msn!w5eg=0!oo7p7ztk@d$7
 PRODUCTION = os.getenv('PRODUCTION', 'False').lower() == 'true'
 DEBUG = True
 ALLOWED_HOSTS = ["localhost", "127.0.0.1","razan-muhammad-kakibola.pbp.cs.ui.ac.id"]
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://razan-muhammad-kakibola.pbp.cs.ui.ac.id"
+]
 
 # Application definition
 
@@ -58,7 +60,7 @@ ROOT_URLCONF = 'kaki_bola.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

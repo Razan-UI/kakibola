@@ -1,4 +1,48 @@
-<h1>{{title}}</h1>
-<h3> {{name}}</h3>
-<h3> {{npm}}</h3>
-<h3> {{class}}</h3>
+
+ <h1>Football Shop</h1>
+
+ <h5>NPM: </h5>
+ <p>{{ npm }}<p>
+
+ <h5>Name:</h5>
+ <p>{{ name }}</p>
+
+ <h5>Class:</h5>
+ <p>{{ class }}</p>
+ <a href="{% url 'main:add_product' %}">
+  <button>+ Add Product</button>
+</a>
+
+<hr>
+
+{% if not prod_list %}
+<p>Belum ada data produk pada Football Shop.</p>
+{% else %}
+
+{% for prod in prod_list %}
+<div>
+  <h2><a href="{% url 'main:show_product' prod.id %}">{{ prod.name }}</a></h2>
+
+  <p><b>{{ prod.get_category_display }}</b>{% if prod.is_featured %} | 
+    <b>Featured</b>{% endif %} | 
+    </p>
+  <p>Price: {{prod.price}}</p>
+
+  {% if prod.thumbnail %}
+  <img src="{{ prod.thumbnail }}" alt="thumbnail" width="150" height="100">
+  <br />
+  {% endif %}
+
+  <p>{{ prod.description|truncatewords:25 }}...</p>
+
+  <p><a href="{% url 'main:show_product' prod.id %}"><button>Details</button></a></p>
+</div>
+
+<hr>
+{% endfor %}
+
+{% endif %}
+
+<!-- <h1>{{nama}}</h1>
+<h2>{{umur}}</h2>
+<h3>{{persona}}</h3> -->
