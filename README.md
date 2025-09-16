@@ -192,3 +192,5 @@ W
     
     6. Apakah ada feedback untuk asdos di tutorial 2 yang sudah kalian kerjakan?
         Ans: Tidak pada saat ini, asdos saya (Kak marco) sangat membantu ketika saya mengalami kesulitan (yg sepertinya berdasarkan masalah dari sisi schema di PWS) dan saya hanya mengharap bahwa work ethic tim asdos tetap terjaga
+
+        ![alt text](image.png)
