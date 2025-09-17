@@ -8,11 +8,19 @@
     <b>Featured</b>{% endif %}| 
     </p>
 
+{% if prod.user %}
+    <p>Seller: {{ prod.user.username }}</p>
+{% else %}
+    <p>Seller: Anonymous</p>
+{% endif %}
+
 {% if prod.thumbnail %}
 <img src="{{ prod.thumbnail }}" alt="prod thumbnail" width="300">
 <br /><br />
 {% endif %}
 
 <p>{{prod.description}}</p>
+
+
 
 {% endblock content %}
