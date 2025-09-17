@@ -1,4 +1,4 @@
-web: https://razan-muhammad-kakibola.pbp.cs.ui.ac.id/
+<img width="1070" height="887" alt="image" src="https://github.com/user-attachments/assets/ce126fb8-5b86-4ec0-adbd-0434d22e6f78" />web: https://razan-muhammad-kakibola.pbp.cs.ui.ac.id/
 
 <!-- TUGAS 1:
 
@@ -193,4 +193,11 @@ W
     6. Apakah ada feedback untuk asdos di tutorial 2 yang sudah kalian kerjakan?
         Ans: Tidak pada saat ini, asdos saya (Kak marco) sangat membantu ketika saya mengalami kesulitan (yg sepertinya berdasarkan masalah dari sisi schema di PWS) dan saya hanya mengharap bahwa work ethic tim asdos tetap terjaga
 
-        ![alt text](image.png)
+POSTMAN IMAGES:<img width="1056" height="954" alt="image" src="https://github.com/user-attachments/assets/c59bde6a-ec28-44d7-b7ea-cc00f7400721" />
+<img width="1065" height="990" alt="image" src="https://github.com/user-attachments/assets/f56bc864-cfd6-45d4-9aad-0919b7f92b29" />
+<img width="1033" height="646" alt="image" src="https://github.com/user-attachments/assets/5d527832-fad9-47b1-b001-1239ae7df0e1" />
+<img width="1017" height="871" alt="image" src="https://github.com/user-attachments/assets/6ceaaed0-8d30-4395-93a2-0fd33a55f24b" />
+
+
+
+
