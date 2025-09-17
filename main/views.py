@@ -60,6 +60,7 @@ def show_main(request):
         'name': 'Razan Muhammad Salim',
         'class': 'PBP B',
         'prod_list': prod_list,
+        'username' : request.user.username,
         'last_login': request.COOKIES.get('last_login', 'Never')
     }
 
