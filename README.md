@@ -116,7 +116,7 @@
     6. Apakah ada feedback untuk asisten dosen tutorial 1 yang telah kamu kerjakan sebelumnya?
     Tidak ada, karena topik tutorial 1 masih dapat dimengerti dengan mudah dan masih belum terlalu kompleks. Tetapi, asisten dosen pada tutorial 0 sangat membantu ketika troubleshooting masalah (karena saya masih sangat baru terhadap Django) -->
 
-TUGAS 2:
+<!-- TUGAS 3:
     1. Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
 
         Ans: Data Delivery merupakan proses pemindahan data dari satu tempat ke tempat lain. Tanpa data delivery, maka platform berbasis internet atau wireless communication tidak mungkin terjadi karena suatu device (client) perlu mengirim semacam data yang akan diproses oleh suatu server (dan vice versa). Dari segi development, suatu platform memiliki banyak komponen/modul. Data delivery diperlukan agar semua komponen dapat saling menerima/mengirim data yang penting untuk tujuan platform.
@@ -197,7 +197,36 @@ POSTMAN IMAGES:<img width="1056" height="954" alt="image" src="https://github.co
 <img width="1065" height="990" alt="image" src="https://github.com/user-attachments/assets/f56bc864-cfd6-45d4-9aad-0919b7f92b29" />
 <img width="1033" height="646" alt="image" src="https://github.com/user-attachments/assets/5d527832-fad9-47b1-b001-1239ae7df0e1" />
 <img width="1017" height="871" alt="image" src="https://github.com/user-attachments/assets/6ceaaed0-8d30-4395-93a2-0fd33a55f24b" />
+ -->
 
 
+TUGAS 4:
+    1) Apa itu Django AuthenticationForm? Jelaskan juga kelebihan dan kekurangannya.
 
+    Ans: Django AuthenticationForm adalah form bawaan dari Django yang digunakan untuk mengautentikasi user (login). Form ini menyediakan interface untuk memvalidasi kredensial pengguna via Username dan Password. Kelebihan utama dari form itu adalah ease-of-use dari penggunaanya. AuthenticationForm sudah memiliki beberapa method seperti is_valid() yang memudahkan validasi input dengan melakukannya secara otomatis tanpa mengimplementasi fungsi login secara manual. Tetapi, form tersebut dapat dibilang relatif sederhana dan hanya mendukung autentikasi berdasarkan Username/Password. Sistem autentikasi lain seperti 2-Factor Authentication akan memerlukan kerja yang lebih ekstensif.
 
+    2) Apa perbedaan antara autentikasi dan otorisasi? Bagaiamana Django mengimplementasikan kedua konsep tersebut?
+
+    Ans: Autentikasi adalah proses memverifikasi identitas User, sedangkan Otorisasi adalah proses menentukan apa yang diizinkan oleh User yang sudah diautentikasi. Django menyediakan AuthenticationForm untuk autentikasi dan menggunakan Cookies dan SessionID untuk menyimpan status login. Pada proyek ini, Django menggunakan decorator @login_required di views.py dimana hanya User yang sudah login/diautentikasi akan dapat mengakses webpage tsb. 
+
+    3) Apa saja kelebihan dan kekurangan session dan cookies dalam konteks menyimpan state di aplikasi web?
+
+    Ans: Session (Upside) =
+    - Relatif lebih aman karena data disimpan di server sehingga informasi sensitif tidak dapat diakses langsung oleh Client. Hanya session ID saja yang dikirim ke Client. 
+
+    - Session dapat menyimpan data yang besar tanpa restriksi ketat dan juga mampu menyimpan objek kompleks seperti JSON.
+
+    Session (Downside)
+    - Membebani Server karena harus menyimpan data untuk setiap pengguna yang menggunakan website. 
+    - Non-Persistent; Akan hilang saat browser ditutup atau terjadi timeout, tidak cocok untuk penyimpanan jangka panjang.
+
+    Cookies (Upside)
+    - Dapat disimpan untuk jangka panjang via expiry date dan tidak akan hilang jika browser ditutup.
+    - Tetap disimpan jika tidak terdapat koneksi internet. Website dapat dikonfigurasi agar ingat preferensi User.
+
+    Cookies (Downside)
+    - Keamanan relatif lebih rendah karena disimpan dalam bentuk plain-text tanpa enkripsi.
+    - Memiliki restriksi 4kb size untuk data-datanya.
+
+    4) Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai? Bagaimana Django menangani hal tersebut?
+    
