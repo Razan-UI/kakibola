@@ -229,4 +229,118 @@ TUGAS 4:
     - Memiliki restriksi 4kb size untuk data-datanya.
 
     4) Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai? Bagaimana Django menangani hal tersebut?
+
+    Ans: Cookies tidak aman secara default karena cookies dirancang untuk convenience. Cookies rentan oleh vektor serangan siber seperti serangan Cross-Site Request Forgery (CSRF) dimana cookies secara otomatis dikirim dengan setiap request ke domain yang sama, sehingga penyerang dapat melakukan aksi tanpa otorisasi atas nama User yang telah login. Django menangani hal tersebut dengan pengimplementasian CSRF Token via django.middleware.csrf.CsrfViewMiddleware yang otomatis aktif dalam setiap request. CSRF Token akan digenerate untuk setiap session dan Django akan memvalidasi token yang dikirim POST Requests. Jika token tidak valid, maka Django akan menolak request tsb.
+
+    5) Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+
+    Ans:
+        1. Mengimport UserCreationForm dan Messages pada views.py agar dapat membuat form registrasi user
+        2. Membuat fungsi Register di views.py dengan UserCreationForm, memvalidasi input dengan is_valid() dan memastikan agar request yang dikirim bertipe POST agar tidak disimpan di URL (Request POST dilakukan jika informasi yang dikirim bersifat sensitif). Fungsi ini akan meredirect user ke webpage login dan ngerender register.html
+        3. Pada templates/register.html, menambahkan: 
+                <form method="POST">
+            {% csrf_token %}
+            <table>
+            {{ form.as_table }}
+            <tr>
+                <td></td>
+                <td><input type="submit" name="submit" value="Daftar" /></td>
+            </tr>
+            </table>
+        </form>
+
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        </div>
+
+        agar registrasi dapat dilihat oleh user dan diproses
+
+        4. Pada urls.py, mengimpor fungsi register dari views.py dan menambahkan urlpatterns dengan path('register/', register, name='register'),
+
+        5. Untuk login, mengimport AuthenticationForm, authenticate, dan login di views.py dan membuat fungsi login_user dengan parameter request dan menambahkan
+        if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+
+      if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('main:show_main')
+
+        else:
+            form = AuthenticationForm(request)
+        context = {'form': form}
+        return render(request, 'login.html', context)
+
+        6. Seperti registrasi, login.html perlu dibuat di templates dan memiliki konsep yang mirip. 
+            <form method="POST" action="">
+        {% csrf_token %}
+        <table>
+        {{ form.as_table }}
+        <tr>
+            <td></td>
+            <td><input class="btn login_btn" type="submit" value="Login" /></td>
+        </tr>
+        </table>
+    </form>
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %} Don't have an account yet? --jika tidak ada akun
+    <a href="{% url 'main:register' %}">Register Now</a>
+
+    7. sama seperti registrasi, pada urls.py, login_user perlu diimpor dari views.py dan ditambahkan pada URLPatterns
+
+    8. Untuk logout, membuat fungsi logout_user di views.py yang mengirim logout(request) dan akan meredirect ke loginpage. Membuat login.html di templates yang berisi tombol yang akan mengarah ke fungsi ini. Sama seperti registrasi dan login, logout_user juga perlu diimpor ke urls.py dan ditambahkan ke URLPatterns.
+
+    9. menambah @login_required(login_url='/login') diatas fungsi show_main dan show_product dan juga mengimport login_required di views.py agar homepage dan product page memerlukan login agar dapat diakses.
     
+    10. mengimport datetime, HttpResponseRedirect, dan reverse di views.py.
+
+    11. Menambah user = form.get_user()
+    login(request, user)
+    response = HttpResponseRedirect(reverse("main:show_main"))
+    response.set_cookie('last_login', str(datetime.datetime.now()))
+    pada form.is_valid() di fungsi login_user dan last_login': request.COOKIES.get('last_login', 'Never') di context show_main. Cookies digunakan untuk mengetahui kapan user terakhir kali login.
+
+    12. Pada logout_user, last_login akan didelete agar timer reset.
+
+    13. Menambah kode <h5>Sesi terakhir login: {{ last_login }}</h5> di main.html untuk menampilkan waktu sejak last login. dan <h3>Username: {{name}}</h3> untuk menampilan username
+
+    14. Pada models.py, import User dan di model Product, menambah user = models.ForeignKey(User, on_delete=models.CASCADE, null=True) agar masing-masing produk akan terasosiasi dengan suatu user. Jika sebelumnya tidak dibuat oleh user, maka akan tetap valid. Setelah itu, melakukan migrasi agar memfinalisasi perubahan pada models.py
+
+    15. pada views.py Menambah form = ProductForm(request.POST or None) di add_product dan news_entry = form.save(commit = False)
+        news_entry.user = request.user
+        news_entry.save() dibawah entry is_valid().
+    agaar setiap objek akan terhubung ke user penambah produk
+
+    16. menambah:
+    filter_type = request.GET.get("filter", "all")  # default 'all'
+
+    if filter_type == "all":
+        news_list = News.objects.all()
+    else:
+        news_list = News.objects.filter(user=request.user) //agar produk dapat difilter berdasarkan siapa yang menambah produk tersebut (user yang login atau orang lain)
+
+    di showw_main() dan mengedit context 'name' menjadi request.user.username, (agar name = username di html file)
+
+    17. Menambah:
+    <a href="?filter=all">
+    <button type="button">All Articles</button>
+    </a>
+    <a href="?filter=my">
+        <button type="button">My Articles</button>
+    </a> 
+
+    agar user dapat melihat dan menggunakan filter tersebut di webpage.
+
+
+
