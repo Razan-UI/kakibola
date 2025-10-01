@@ -4,9 +4,9 @@ from django.contrib.auth.models import User
 
 class Product(models.Model):
     CATEGORY_CHOICES = [
-        ('clothing', 'Clothing'),
-        ('shoes', 'Shoes'),
-        ('tools', 'Tools'),
+        ('Clothing', 'Clothing'),
+        ('Shoes', 'Shoes'),
+        ('Tools', 'Tools'),
     
     ]
     
@@ -20,7 +20,3 @@ class Product(models.Model):
     thumbnail = models.URLField(blank=True, null=True)
     is_featured = models.BooleanField(default=False)
     
-# class Employee(models.Model):
-#     name = models.CharField(max_length=255)
-#     age = models.IntegerField()
-#     persona = models.TextField()

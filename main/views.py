@@ -115,7 +115,25 @@ def show_json_by_id(request, prod_id):
        return HttpResponse(json_data, content_type="application/json")
    except Product.DoesNotExist:
        return HttpResponse(status=404)
-   
+
+def edit_product(request, id):
+    prod = get_object_or_404(Product, pk=id)
+    form = ProductForm(request.POST or None, instance=prod)
+    if form.is_valid() and request.method == 'POST':
+        form.save()
+        return redirect('main:show_main')
+
+    context = {
+        'form': form
+    }
+
+    return render(request, "edit_product.html", context)
+
+def delete_product(request, id):
+    prod = get_object_or_404(Product, pk=id)
+    prod.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))
+
 # def add_employee(request):
 #     employee = Employee.objects.create(name = "razan", age = 19, persona = "persona5")
 #     context = {
