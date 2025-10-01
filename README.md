@@ -199,7 +199,7 @@ POSTMAN IMAGES:<img width="1056" height="954" alt="image" src="https://github.co
 <img width="1017" height="871" alt="image" src="https://github.com/user-attachments/assets/6ceaaed0-8d30-4395-93a2-0fd33a55f24b" />
  -->
 
-
+<!-- 
 TUGAS 4:
     1) Apa itu Django AuthenticationForm? Jelaskan juga kelebihan dan kekurangannya.
 
@@ -340,7 +340,50 @@ TUGAS 4:
         <button type="button">My Articles</button>
     </a> 
 
-    agar user dapat melihat dan menggunakan filter tersebut di webpage.
+    agar user dapat melihat dan menggunakan filter tersebut di webpage. -->
 
+TUGAS 5:
+    1)Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+    
+    Prioritasnya:
+    - Inline Styles seperti <div style="color: red;">Text</div>
+    - ID selectors seperti #myID { color: blue; }
+    - Classes Selector seperti Kelas: .myClass { color: green; }
+    - Element Selector seperti div { color: gray; }
 
+    2) Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design, serta jelaskan mengapa!
+
+    ans: Responsive design sangat penting karena pada era ini terdapat banyak variasi dari device-device digital yang digunakan oleh masyarakat secara luas. Tanpa responsive design, website yang dapat digunakan dan dinavigasi dengan mudah di sebuah PC mungkin saja tidak berfungsi jika diakses dengan device mobile. Lebih spesifiknya, responsive web design akan beradaptasi dengan screen size/resolusi dari banyak device sehingga lebih sedikit incompatibilitas. Salah satu contoh website ini adalah art.yale.edu. Asumsi saya adalah UI/UX website tersebut sengaja dibuat tidak atraktif karena merupakan website tentang art. 
+
+    3) Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+
+    ans: 
+    Margin = ruang luar elemen yang memisahkan elemen dari yang lainnya
+    Border = garis yang membatasi elemen dan berada di antara margin dan padding
+    Padding = ruang di dalam elemen, antara konten elemen dan batas (border).
+
+    ketiga hal tersebut dapat diimplementasi dengan menggunakan properti-properti masing masing elemen. ex:
+    .element {
+    margin: 20px;
+    border: 2px solid #000;
+    padding: 15px;
+    }
+
+    4) Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+    ans:
+    Flexbox adalah metode placement yang digunakan untuk mendistribusi space diantara elemen dalam satu dimensi (horizontal/vertikal). Flexbox memungkinkan elemen children (flex items) dalam suatu kontainer agar dapat ditambilkan dengan fleksibel. Flexbox responsif dan dapat beradaptasi dengan ukuran layar, selain itu, flexbox dapat digunakan untuk mengatur spacing antar elemen dengan properti seperti align-items dan justify-content.
+
+    Grid layout memungkinkan user untuk mendefinisikan dua dimensi untuk elemen dalam kontainer grid. User dapat menentukan area grid dengan mendefinisikan grid-template-rows dan grid-template-columns, serta menyusun elemen dalam area yang ditentukan.
+
+    5) Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step
+    ans:  
+    1. menambah fitur edit_product ke views.py dan mengaitkannya ke urls.py (dengan mengupdate database)
+    2. menambah fitur delete_news ke views.py dan mengimport ke urls.py (dengan prod.delete)
+    3. menambahkan tailwind ke base.html 
+    4. membuat konfigurasi static files di setting.py dan membuat folder static/css untuk menyimpan global.css dimana file css  tersebut akan digunakan sebagai template tema untuk setiap form.
+    5. menghubungkan global.css dan script tailwing ke main.html agar dapaat membuat design di main.html
+    6. membuat stylesheet untuk masing-masing html dan juga menggunakan properti-properti seperti flex untuk placement masing-masing elemen. 
+    7. mengedit masing-masing elemen dengan text-(color), bg (color), dan hover-(color) agar elemen-elemen tertentu berubah warna ketika cursor berada diatas elemen tersebut
+    8. 
+ 
 
