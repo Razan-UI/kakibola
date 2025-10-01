@@ -384,6 +384,7 @@ TUGAS 5:
     5. menghubungkan global.css dan script tailwing ke main.html agar dapaat membuat design di main.html
     6. membuat stylesheet untuk masing-masing html dan juga menggunakan properti-properti seperti flex untuk placement masing-masing elemen. 
     7. mengedit masing-masing elemen dengan text-(color), bg (color), dan hover-(color) agar elemen-elemen tertentu berubah warna ketika cursor berada diatas elemen tersebut
-    8. 
+    
+    [Color Palette is based off of dark-academia, mungkin kurang suitable]
  
 
