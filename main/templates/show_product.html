@@ -2,57 +2,48 @@
 {% load static %}
 
 {% block meta %}
-<title>{{ prod.name }} - Football Products</title>
+<title>{{ prod.name }} - Selcaster Sports Needs</title>
 {% endblock meta %}
 
 {% block content %}
-<div class="bg-gray-900 text-gray-200 w-full min-h-screen">
+<div class="bg-[#2E2A2B] text-[#D9C6B2] w-full min-h-screen">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
         <!-- Back Navigation -->
         <div class="mb-6">
-            <a href="{% url 'main:show_main' %}" class="text-gray-400 hover:text-gray-300 font-medium transition-colors">
+            <a href="{% url 'main:show_main' %}" class="text-[#D9C6B2] hover:text-[#F2E1D4] font-medium transition-colors">
                 ← Back to Products
             </a>
         </div>
         
         <!-- Loading State -->
-        <div id="loading-state" class="bg-white rounded-lg border border-gray-200 p-12 text-center">
+        <div id="loading-state" class="bg-[#4B3D3D] rounded-lg border border-[#D9C6B2] p-12 text-center">
             <svg class="animate-spin h-8 w-8 text-green-600 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
             </svg>
-            <p class="text-gray-600 mt-3">Loading products detail...</p>
+            <p class="text-[#F2E1D4] mt-3">Loading product details...</p>
         </div>
 
         <!-- Error State -->
-        <div id="error-state" class="bg-white rounded-lg border border-gray-200 p-12 text-center hidden">
+        <div id="error-state" class="bg-[#4B3D3D] rounded-lg border border-[#D9C6B2] p-12 text-center hidden">
             <div class="w-16 h-16 mx-auto mb-4">
                 <div class="text-red-500 text-5xl">⚠️</div>
             </div>
-            <h3 class="text-lg font-medium text-gray-900 mb-2">Failed to load products</h3>
-            <p class="text-gray-500">Please try again later.</p>
+            <h3 class="text-lg font-medium text-[#D9C6B2] mb-2">Failed to load products</h3>
+            <p class="text-[#F2E1D4]">Please try again later.</p>
         </div>
 
         <!-- Product -->
-        <article id="article-content" class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden hidden">
+        <article id="article-content" class="bg-[#4B3D3D] rounded-lg border border-[#D9C6B2] overflow-hidden hidden">
             
             <!-- Header -->
             <div class="p-6 sm:p-8">
-                <div id="badges-container" class="flex flex-wrap items-center gap-2 mb-4">
+                <div id="badges-container" class="flex flex-wrap items-center gap-2 mb-4"></div>
                 
-                </div>
-                
-                <h1 id="article-name" class="text-3xl sm:text-4xl font-bold text-[#D6CFCB] leading-tight mb-4">
-                    <!-- {{ prod.name }} -->
-                </h1>
-
-                <!-- <div class="flex flex-wrap items-center text-sm text-gray-500 gap-4">
-                    <span>{{ prod.prod_views }} views</span>
-                </div> -->
+                <h1 id="article-name" class="text-3xl sm:text-4xl font-bold text-[#D6CFCB] leading-tight mb-4"></h1>
             </div>
 
-            <!-- Featured Image -->
             <!-- Featured Image -->
             <div id="featured-image-container" class="px-6 sm:px-8 hidden">
                 <img id="featured-image" 
@@ -61,28 +52,18 @@
                      class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">
             </div>
 
-            <!-- {% if prod.thumbnail %}
-                <div class="px-6 sm:px-8">
-                    <img src="{{ prod.thumbnail }}" 
-                         alt="{{ prod.title }}" 
-                         class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">
-                </div>
-            {% endif %} -->
-
             <!-- Content -->
             <div class="p-6 sm:p-8">
                 <div class="prose prose-lg max-w-none text-gray-300">
-                    <div id = "article-content-text" class="leading-relaxed whitespace-pre-line text-base sm:text-lg">
-                        <!-- {{ prod.description }} -->
-                    </div>
+                    <div id="article-description" class="leading-relaxed whitespace-pre-line text-base sm:text-lg"></div>
                 </div>
             </div>
 
             <!-- Seller Info -->
-            <div class="border-t border-gray-700 p-6 sm:p-8 bg-gray-850">
+            <div class="border-t border-[#D9C6B2] p-6 sm:p-8 bg-[#3D2A2B]">
                 <div class="flex items-center justify-between">
                     <div>
-                        <div class="font-medium text-gray-900">
+                        <div class="font-medium text-[#D9C6B2]">
                             <p id="article-seller">Seller: Loading...</p>
                         </div>
                         <p class="text-sm text-gray-500">Seller</p>
@@ -95,7 +76,7 @@
 <script>
 // Configuration
 const PRODUCT_ID = "{{ prod.id }}";
-const PRODUCT_DETAIL_ENDPOINT = `{% url 'main:show_json_by_id' '-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', PRODUCT_ID);
+const PRODUCT_DETAIL_ENDPOINT = `{% url 'main:show_json_by_id' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', PRODUCT_ID);
 
 // DOM Elements
 const loadingState = document.getElementById('loading-state');
@@ -105,7 +86,7 @@ const badgesContainer = document.getElementById('badges-container');
 const articleTitle = document.getElementById('article-name');
 const featuredImageContainer = document.getElementById('featured-image-container');
 const featuredImage = document.getElementById('featured-image');
-const articleContentText = document.getElementById('article-content-text');
+const articleContentText = document.getElementById('article-description');
 const articleSeller = document.getElementById('article-seller');
 
 // Show/hide page sections
@@ -121,7 +102,7 @@ function getCategoryLabel(categoryCode) {
         Clothing : 'Clothing',
         Shoes : 'Shoes',
         Tools : 'Tools',
-  };
+    };
     return categoryMapping[categoryCode] || categoryCode;
 }
 
@@ -129,14 +110,14 @@ function getCategoryLabel(categoryCode) {
 function renderArticle(prod) {
     // Set title
     articleTitle.textContent = prod.name;
-    document.title = `${prod.name} - Football Products`;
+    document.title = `${prod.name} - Selcaster Sports Needs`;
     
     // Set badges
     badgesContainer.innerHTML = '';
     
     // Category badge
     const categoryBadge = document.createElement('span');
-    categoryBadge.className = 'inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-green-600 text-white';
+    categoryBadge.className = 'inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-[#A67C6D] text-white';
     categoryBadge.textContent = getCategoryLabel(prod.category);
     badgesContainer.appendChild(categoryBadge);
     
@@ -147,8 +128,6 @@ function renderArticle(prod) {
         featuredBadge.textContent = 'Featured';
         badgesContainer.appendChild(featuredBadge);
     }
-    
-
     
     // Set featured image
     if (prod.thumbnail) {
