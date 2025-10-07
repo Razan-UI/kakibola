@@ -7,66 +7,61 @@
 
 {% block content %}
 {% include 'navbar.html' %}
-<div class="bg-gray-900 text-gray-200 w-full pt-16 min-h-screen">
+<div class="bg-[#2E2A2B] text-[#D9C6B2] w-full pt-16 min-h-screen">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
     <!-- Header Section -->
     <div class="mb-8">
-      <h1 class="text-4xl font-bold text-[#6D4F4A] mb-2">Latest Football Related Products</h1>
-      <p class="text-gray-400">Stay active and achieve the best performance with our best products!</p>
+      <h1 class="text-4xl font-bold text-[#A67C6D] mb-2">Latest Football Related Products</h1>
+      <p class="text-[#F2E1D4]">Stay active and achieve the best performance with our best products!</p>
     </div>
 
     <!-- Filter Section -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 bg-gray-800 rounded-lg border border-gray-700 p-4">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 bg-[#4B3D3D] rounded-lg border border-[#2E2A2B] p-4">
       <div class="flex space-x-3 mb-4 sm:mb-0">
-        <a id = "filter-all" class="bg-[#6D4F4A] text-white bg-gray-600 text-gray-200 border border-gray-700 px-4 py-2 rounded-md font-medium transition-colors hover:bg-yellow-700 hover:text-white">
+        <a id="filter-all" class="bg-[#A67C6D] text-white border border-[#2E2A2B] px-4 py-2 rounded-md font-medium transition-colors hover:bg-[#F2E1D4] hover:text-black">
           All Products
         </a>
-        <a id = "filter-my" class="bg-[#6D4F4A] text-white bg-gray-600 text-gray-200 border border-gray-700 px-4 py-2 rounded-md font-medium transition-colors hover:bg-yellow-700 hover:text-white">
+        <a id="filter-my" class="bg-[#A67C6D] text-white border border-[#2E2A2B] px-4 py-2 rounded-md font-medium transition-colors hover:bg-[#F2E1D4] hover:text-black">
           My Products
         </a>
       </div>
       {% if user.is_authenticated %}
-        <div class="text-sm text-gray-400">
+        <div class="text-sm text-[#F2E1D4]">
           Last login: {{ last_login }}
         </div>
       {% endif %}
     </div>
 
-<!-- Loading State -->
-    <div id="loading" class="bg-white rounded-lg border border-gray-200 p-12 text-center hidden">
-      <svg class="animate-spin h-8 w-8 text-red-600 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+    <!-- Loading State -->
+    <div id="loading" class="bg-[#4B3D3D] rounded-lg border border-[#D9C6B2] p-12 text-center hidden">
+      <svg class="animate-spin h-8 w-8 text-[#F2E1D4] inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
       </svg>
-      <p class="text-gray-600 mt-3">Loading products...</p>
+      <p class="text-[#F2E1D4] mt-3">Loading products...</p>
     </div>
 
     <!-- Error State -->
-    <div id="error" class="hidden"></div>
+    <div id="error" class="hidden text-[#F2E1D4]"></div>
 
     <!-- Product Grid -->
     <div id="grid" class="hidden"></div>
     
     <!-- Empty State -->
-    
-    <div id = "empty" class="bg-gray-800 rounded-lg border border-gray-700 p-12 text-center hidden">
+    <div id="empty" class="bg-[#4B3D3D] rounded-lg border border-[#2E2A2B] p-12 text-center hidden">
       <div class="w-32 h-32 mx-auto mb-4">
         <img src="{% static 'image/no-product.png' %}" alt="No products available" class="w-full h-full object-contain">
       </div>
-      <h3 class="text-lg font-medium text-gray-300 mb-2">No products found</h3>
-      <p class="text-gray-500 mb-6">Be the first to get access to exclusive football-adjacent products!</p>
-      <a href="{% url 'main:add_product' %}" class="inline-flex items-center px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-500 transition-colors">
+      <h3 class="text-lg font-medium text-[#D9C6B2] mb-2">No products found</h3>
+      <p class="text-[#F2E1D4] mb-6">Be the first to get access to exclusive football-adjacent products!</p>
+      <a href="{% url 'main:add_product' %}" class="inline-flex items-center px-4 py-2 bg-[#A67C6D] text-white rounded-md hover:bg-[#F2E1D4] hover:text-black transition-colors">
         Add Product
       </a>
     </div>
-      <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {% for prod in prod_list %}
-          {% include 'card_product.html' with prod=prod %}
-        {% endfor %}
-      </div> -->
   </div>
 </div>
+
 <script>
 // Configuration
 const PRODUCT_API_ENDPOINT = "{% url 'main:show_json' %}";
@@ -89,11 +84,11 @@ function updateFilterButtonsAppearance() {
   if (!showAllProductButton || !showMyProductButton) return;
   
   if (activeFilter === 'all') {
-    showAllProductButton.className = 'bg-green-600 text-white px-4 py-2 rounded-md font-medium transition-colors hover:bg-green-700';
-    showMyProductButton.className = 'bg-white text-gray-700 border border-gray-300 px-4 py-2 rounded-md font-medium transition-colors hover:bg-green-600 hover:text-white';
+    showAllProductButton.className = 'bg-[#A67C6D] text-white border border-[#2E2A2B] px-4 py-2 rounded-md font-medium transition-colors hover:bg-[#F2E1D4] hover:text-black';
+    showMyProductButton.className = 'bg-[#4B3D3D] text-white border border-[#2E2A2B] px-4 py-2 rounded-md font-medium transition-colors hover:bg-[#F2E1D4] hover:text-black';
   } else {
-    showMyProductButton.className = 'bg-green-600 text-white px-4 py-2 rounded-md font-medium transition-colors hover:bg-green-700';
-    showAllProductButton.className = 'bg-white text-gray-700 border border-gray-300 px-4 py-2 rounded-md font-medium transition-colors hover:bg-green-600 hover:text-white';
+    showMyProductButton.className = 'bg-[#A67C6D] text-white border border-[#2E2A2B] px-4 py-2 rounded-md font-medium transition-colors hover:bg-[#F2E1D4] hover:text-black';
+    showAllProductButton.className = 'bg-[#4B3D3D] text-white border border-[#2E2A2B] px-4 py-2 rounded-md font-medium transition-colors hover:bg-[#F2E1D4] hover:text-black';
   }
 }
 
@@ -123,30 +118,29 @@ function getReadableCategoryName(categoryCode) {
 // Create prod card element
 function buildProductCardElement(prodItem) {
   const articleElement = document.createElement('article');
-  articleElement.className = 'bg-white rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-300 overflow-hidden flex flex-col h-full';
+  articleElement.className = 'bg-[#D9C6B2] rounded-lg border border-[#2E2A2B] hover:shadow-lg transition-shadow duration-300 overflow-hidden flex flex-col h-full';
 
   const detailLink = `{% url 'main:show_product' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', prodItem.id);
   const editLink = `{% url 'main:edit_product' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', prodItem.id);
   const deleteLink = `{% url 'main:delete_product' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', prodItem.id);
-
- 
-
+  
   const categoryLabel = getReadableCategoryName(prodItem.category);
   const isFeatured = prodItem.is_featured;
 
   const thumbnailHtml = prodItem.thumbnail 
-    ? `<img src='${prodItem.thumbnail}' alt='${prodItem.name}' class='w-full h-full object-cover'>` 
-    : `<div class='w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center'></div>`;
+  ? `<img src='${prodItem.thumbnail}' alt='${prodItem.name}' class='w-full h-full object-cover'>` 
+  : `<div class='w-full h-full bg-[#343031] flex items-center justify-center'>
+    <span class='text-[#F2E1D4] text-lg font-semibold'>No Thumbnail Avail</span>
+    </div>`
 
   const featuredBadge = isFeatured 
     ? `<span class='inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-yellow-100 text-yellow-800'>Featured</span>` 
     : '';
-  console.log('Current User ID:', CURRENT_USER_ID);  
-  console.log('Product User ID:', prodItem.user_id);
+
   const editDeleteButtons = CURRENT_USER_ID && Number(CURRENT_USER_ID) === Number(prodItem.user_id)
     ? `<div class='flex space-x-2'>
         <a href='${editLink}' class='text-gray-600 hover:text-gray-700 text-sm transition-colors'>Edit</a>
-        <a href='${deleteLink}' class='text-red-600 hover:text-red-700 text-sm transition-colors' onclick='return confirm("Are you sure you want to delete this article?")'>Delete</a>
+        <a href='${deleteLink}' class='text-red-600 hover:text-red-700 text-sm transition-colors' onclick='return confirm("Are you sure you want to delete this product?")'>Delete</a>
       </div>`
     : '';
 
@@ -154,19 +148,22 @@ function buildProductCardElement(prodItem) {
     <div class="aspect-[16/9] relative overflow-hidden">
       ${thumbnailHtml}
       <div class="absolute top-3 left-3">
-        <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-green-600 text-white">${categoryLabel}</span>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-[#A67C6D] text-white">${categoryLabel}</span>
       </div>
       <div class="absolute top-3 right-3 flex space-x-2">
         ${featuredBadge}
       </div>
     </div>
     <div class="p-5 flex flex-col flex-1">
-      <h3 class="text-lg font-semibold text-gray-900 mb-3 line-clamp-2 leading-tight">
-        <a href="${detailLink}" class="hover:text-green-600 transition-colors">${prodItem.name}</a>
+      <h3 class="text-lg font-semibold text-[#2E2A2B] mb-3 line-clamp-2 leading-tight">
+        <a href="${detailLink}" class="hover:text-[#A67C6D] transition-colors">${prodItem.name}</a>
       </h3>
-      <p class="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-4">${prodItem.description}</p>
-      <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
-        <a href="${detailLink}" class="text-green-600 hover:text-green-700 font-medium text-sm transition-colors">Read more</a>
+      <h4 class="text-lg font-semibold text-gray-900 mb-3 line-clamp-2 leading-tight">
+        <a href="${detailLink}" class="hover:text-green-600 transition-colors"> Rp.${prodItem.price}.00</a>
+      </h4>
+      <p class="text-[#2E2A2B] text-sm leading-relaxed line-clamp-3 mb-4">${prodItem.description}</p>
+      <div class="pt-4 border-t border-[#4B3D3D] flex items-center justify-between">
+        <a href="${detailLink}" class="text-[#A67C6D] hover:text-green-700 font-medium text-sm transition-colors">Read more</a>
         ${editDeleteButtons}
       </div>
     </div>
@@ -211,7 +208,7 @@ async function fetchProductFromServer() {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch prod data from server');
+      throw new Error('Failed to fetch product data from server');
     }
 
     const prodData = await response.json();
@@ -219,7 +216,7 @@ async function fetchProductFromServer() {
     
     filterAndDisplayProduct();
   } catch (error) {
-    console.error('Error loading prod:', error);
+    console.error('Error loading products:', error);
     displayPageSection({ showError: true });
   }
 }
