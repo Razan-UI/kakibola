@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block meta %}
-<title>{{ prod.title }} - Football News</title>
+<title>{{ prod.name }} - Football Products</title>
 {% endblock meta %}
 
 {% block content %}
@@ -12,33 +12,39 @@
         <!-- Back Navigation -->
         <div class="mb-6">
             <a href="{% url 'main:show_main' %}" class="text-gray-400 hover:text-gray-300 font-medium transition-colors">
-                ← Back to News
+                ← Back to Products
             </a>
         </div>
         
-        <!-- Article -->
-        <article class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+        <!-- Loading State -->
+        <div id="loading-state" class="bg-white rounded-lg border border-gray-200 p-12 text-center">
+            <svg class="animate-spin h-8 w-8 text-green-600 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+            </svg>
+            <p class="text-gray-600 mt-3">Loading products detail...</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="error-state" class="bg-white rounded-lg border border-gray-200 p-12 text-center hidden">
+            <div class="w-16 h-16 mx-auto mb-4">
+                <div class="text-red-500 text-5xl">⚠️</div>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">Failed to load products</h3>
+            <p class="text-gray-500">Please try again later.</p>
+        </div>
+
+        <!-- Product -->
+        <article id="article-content" class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden hidden">
             
             <!-- Header -->
             <div class="p-6 sm:p-8">
-                <div class="flex flex-wrap items-center gap-2 mb-4">
-                    <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-[#6D4F4A] text-white">
-                        {{ prod.category }}
-                    </span>
-                    {% if prod.is_featured %}
-                        <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-[#D6CFCB] text-gray-900">
-                            Featured
-                        </span>
-                    {% endif %}
-                    {% if prod.is_prod_hot %}
-                        <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-[#C97B7B] text-white">
-                            Hot
-                        </span>
-                    {% endif %}
+                <div id="badges-container" class="flex flex-wrap items-center gap-2 mb-4">
+                
                 </div>
                 
-                <h1 class="text-3xl sm:text-4xl font-bold text-[#D6CFCB] leading-tight mb-4">
-                    {{ prod.name }}
+                <h1 id="article-name" class="text-3xl sm:text-4xl font-bold text-[#D6CFCB] leading-tight mb-4">
+                    <!-- {{ prod.name }} -->
                 </h1>
 
                 <!-- <div class="flex flex-wrap items-center text-sm text-gray-500 gap-4">
@@ -47,39 +53,143 @@
             </div>
 
             <!-- Featured Image -->
-            {% if prod.thumbnail %}
+            <!-- Featured Image -->
+            <div id="featured-image-container" class="px-6 sm:px-8 hidden">
+                <img id="featured-image" 
+                     src="" 
+                     alt="" 
+                     class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">
+            </div>
+
+            <!-- {% if prod.thumbnail %}
                 <div class="px-6 sm:px-8">
                     <img src="{{ prod.thumbnail }}" 
                          alt="{{ prod.title }}" 
                          class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">
                 </div>
-            {% endif %}
+            {% endif %} -->
 
             <!-- Content -->
             <div class="p-6 sm:p-8">
                 <div class="prose prose-lg max-w-none text-gray-300">
-                    <div class="leading-relaxed whitespace-pre-line text-base sm:text-lg">
-                        {{ prod.description }}
+                    <div id = "article-content-text" class="leading-relaxed whitespace-pre-line text-base sm:text-lg">
+                        <!-- {{ prod.description }} -->
                     </div>
                 </div>
             </div>
 
-            <!-- Author Info -->
+            <!-- Seller Info -->
             <div class="border-t border-gray-700 p-6 sm:p-8 bg-gray-850">
                 <div class="flex items-center justify-between">
                     <div>
-                        <div class="font-medium text-gray-300">
-                            {% if prod.user %}
-                                <p>Seller: {{ prod.user.username }}</p>
-                            {% else %}
-                                <p>Seller: Anonymous</p>
-                            {% endif %}
+                        <div class="font-medium text-gray-900">
+                            <p id="article-seller">Seller: Loading...</p>
                         </div>
-                        <p class="text-sm text-gray-500">Known Seller</p>
+                        <p class="text-sm text-gray-500">Seller</p>
                     </div>
                 </div>
             </div>
         </article>
     </div>
 </div>
+<script>
+// Configuration
+const PRODUCT_ID = "{{ prod.id }}";
+const PRODUCT_DETAIL_ENDPOINT = `{% url 'main:show_json_by_id' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', NEWS_ID);
+
+// DOM Elements
+const loadingState = document.getElementById('loading-state');
+const errorState = document.getElementById('error-state');
+const articleContent = document.getElementById('article-content');
+const badgesContainer = document.getElementById('badges-container');
+const articleTitle = document.getElementById('article-name');
+const featuredImageContainer = document.getElementById('featured-image-container');
+const featuredImage = document.getElementById('featured-image');
+const articleContentText = document.getElementById('article-content-text');
+const articleSeller = document.getElementById('article-seller');
+
+// Show/hide page sections
+function showState(state) {
+    loadingState.classList.toggle('hidden', state !== 'loading');
+    errorState.classList.toggle('hidden', state !== 'error');
+    articleContent.classList.toggle('hidden', state !== 'ready');
+}
+
+// Get readable category name
+function getCategoryLabel(categoryCode) {
+    const categoryMapping = {
+        Clothing : 'Clothing',
+        Shoes : 'Shoes',
+        Tools : 'Tools',
+  };
+    return categoryMapping[categoryCode] || categoryCode;
+}
+
+// Render article content
+function renderArticle(prod) {
+    // Set title
+    articleTitle.textContent = prod.name;
+    document.title = `${prod.name} - Football Products`;
+    
+    // Set badges
+    badgesContainer.innerHTML = '';
+    
+    // Category badge
+    const categoryBadge = document.createElement('span');
+    categoryBadge.className = 'inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-green-600 text-white';
+    categoryBadge.textContent = getCategoryLabel(prod.category);
+    badgesContainer.appendChild(categoryBadge);
+    
+    // Featured badge
+    if (prod.is_featured) {
+        const featuredBadge = document.createElement('span');
+        featuredBadge.className = 'inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-yellow-100 text-yellow-800';
+        featuredBadge.textContent = 'Featured';
+        badgesContainer.appendChild(featuredBadge);
+    }
+    
+
+    
+    // Set featured image
+    if (prod.thumbnail) {
+        featuredImage.src = prod.thumbnail;
+        featuredImage.alt = prod.name;
+        featuredImageContainer.classList.remove('hidden');
+    } else {
+        featuredImageContainer.classList.add('hidden');
+    }
+    
+    // Set content
+    articleContentText.textContent = prod.description;
+    
+    // Set seller
+    const sellerName = prod.user || 'Anonymous';
+    articleSeller.textContent = `Seller: ${sellerName}`;
+}
+
+// Fetch prod detail
+async function loadProductsDetail() {
+    try {
+        showState('loading');
+        
+        const response = await fetch(PRODUCT_DETAIL_ENDPOINT, {
+            headers: { 'Accept': 'application/json' },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch prod detail');
+        }
+
+        const prodData = await response.json();
+        renderArticle(prodData);
+        showState('ready');
+    } catch (error) {
+        console.error('Error loading product detail:', error);
+        showState('error');
+    }
+}
+
+// Initialize page
+loadProductsDetail();
+</script>
 {% endblock content %}

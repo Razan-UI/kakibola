@@ -114,7 +114,7 @@ def show_json(request):
             'thumbnail': prod.thumbnail,
             'description': prod.description,
             'is_featured': prod.is_featured,
-            'user': prod.user,
+            'user_id': prod.user_id,
         }
         for prod in prod_list
     ]
@@ -132,7 +132,7 @@ def show_json_by_id(request, prod_id):
             'thumbnail': prod.thumbnail,
             'description': prod.description,
             'is_featured': prod.is_featured,
-            'user': prod.user,
+            'user_id': prod.user_id,
         }
         return JsonResponse(data)
     
