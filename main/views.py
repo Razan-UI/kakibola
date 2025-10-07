@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from main.models import Product
 from main.forms import ProductForm
-from django.http import HttpResponse,HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.core import serializers
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
@@ -70,9 +70,9 @@ def add_product(request):
     form = ProductForm(request.POST or None)
 
     if form.is_valid() and request.method == 'POST':
-        prod_entry = form.save(commit = False)
-        prod_entry.user = request.user
-        prod_entry.save()
+        news_entry = form.save(commit = False)
+        news_entry.user = request.user
+        news_entry.save()
         return redirect('main:show_main')
 
     context = {
@@ -105,20 +105,8 @@ def show_xml_by_id(request, prod_id):
 
 def show_json(request):
     prod_list = Product.objects.all()
-    data = [
-        {
-            'id': str(prod.id),
-            'name': prod.name,
-            'description': prod.description,
-            'category': prod.category,
-            'thumbnail': prod.thumbnail,
-            'is_featured': prod.is_featured,
-            'user': prod.user,
-        }
-        for prod in prod_list
-    ]
-
-    return JsonResponse(data, safe=False)
+    json_data = serializers.serialize("json", prod_list)
+    return HttpResponse(json_data, content_type="application/json")
 
 def show_json_by_id(request, prod_id):
    try:

@@ -6,7 +6,7 @@
 }
 .form-style form input:focus, form textarea:focus, form select:focus {
     outline: none;
-    border-color: #5d3300;
+    border-color: #5E3E17;
     box-shadow: 0 0 0 3px #5E3E17;
 }
 
@@ -16,7 +16,7 @@
     padding: 0;
     border: 2px solid #323232;
     border-radius: 0.375rem;
-    background-color: rgb(58, 54, 54);
+    background-color: rgb(67, 67, 67);
     cursor: pointer;
     position: relative;
     appearance: none;
