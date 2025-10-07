@@ -24,7 +24,7 @@
               <div class="text-sm font-medium text-[#D6CFCB]">{{ name|default:user.username }}</div>
               <div class="text-xs text-gray-400">{{ npm|default:"Student" }} - {{ class|default:"Class" }}</div>
             </div>
-            <a href="{% url 'main:logout' %}" class="text-red-400 hover:text-red-300 font-medium transition-colors">
+            <a href="{% url 'main:logout' %}" class="text-red-400 hover:text-red-300 font-medium transition-colors" >
               Logout
             </a>
           {% else %}
@@ -71,9 +71,9 @@
               <div class="font-medium text-[#D6CFCB]">{{ name|default:user.username }}</div>
               <div class="text-sm text-gray-400">{{ npm|default:"Student" }} - {{ class|default:"Class" }}</div>
             </div>
-            <a href="{% url 'main:logout' %}" class="block text-red-400 hover:text-red-300 font-medium py-3 transition-colors">
+            <button  href="{% url 'main:logout' %}" class="block text-red-400 hover:text-red-300 font-medium py-3 transition-colors" >
               Logout
-            </a>
+            </button>
           {% else %}
             <div class="space-y-3">
               <a href="{% url 'main:login' %}" class="block text-gray-400 hover:text-gray-200 font-medium py-3 transition-colors">
