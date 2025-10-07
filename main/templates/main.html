@@ -70,7 +70,7 @@
 <script>
 // Configuration
 const PRODUCT_API_ENDPOINT = "{% url 'main:show_json' %}";
-const CURRENT_USER_ID = "{{user_id|default_if_none:'' }}";
+const CURRENT_USER_ID = "{{user.id|default_if_none:'' }}";
 
 // DOM Elements
 const loadingSpinner = document.getElementById('loading');
@@ -141,7 +141,8 @@ function buildProductCardElement(prodItem) {
   const featuredBadge = isFeatured 
     ? `<span class='inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-yellow-100 text-yellow-800'>Featured</span>` 
     : '';
-
+  console.log('Current User ID:', CURRENT_USER_ID);  
+  console.log('Product User ID:', prodItem.user_id);
   const editDeleteButtons = CURRENT_USER_ID && Number(CURRENT_USER_ID) === Number(prodItem.user_id)
     ? `<div class='flex space-x-2'>
         <a href='${editLink}' class='text-gray-600 hover:text-gray-700 text-sm transition-colors'>Edit</a>
@@ -190,7 +191,7 @@ function filterAndDisplayProduct() {
   
   const filteredProduct = activeFilter === 'all' 
     ? allProductData 
-    : allProductData.filter(prod => Number(prod.id) === Number(CURRENT_USER_ID));
+    : allProductData.filter(prod => Number(prod.user_id) === Number(CURRENT_USER_ID));
   
   if (filteredProduct.length === 0) {
     displayPageSection({ showEmpty: true });
