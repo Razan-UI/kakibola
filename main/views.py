@@ -122,12 +122,22 @@ def show_json(request):
     return JsonResponse(data, safe=False)
 
 def show_json_by_id(request, prod_id):
-   try:
-       prod_item = Product.objects.get(pk=prod_id)
-       json_data = serializers.serialize("json", [prod_item])
-       return HttpResponse(json_data, content_type="application/json")
-   except Product.DoesNotExist:
-       return HttpResponse(status=404)
+    try:
+        prod = Product.objects.select_related('user').get(pk=prod_id)
+        data = {
+            'id': str(prod.id),
+            'name': prod.name,
+            'price': prod.price,
+            'category': prod.category,
+            'thumbnail': prod.thumbnail,
+            'description': prod.description,
+            'is_featured': prod.is_featured,
+            'user': prod.user,
+        }
+        return JsonResponse(data)
+    
+    except Product.DoesNotExist:
+        return JsonResponse({'detail': 'Not found'}, status=404)
 
 def edit_product(request, id):
     prod = get_object_or_404(Product, pk=id)
