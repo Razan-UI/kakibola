@@ -1,32 +1,33 @@
 .form-style form input, form textarea, form select {
     width: 100%;
     padding: 0.5rem;
-    border: 2px solid #321803;
+    border: 2px solid #A67C6D; /* Updated to match the palette */
     border-radius: 0.375rem;
+    background-color: #4B3D3D; /* Updated to match the palette */
+    color: #F2E1D4; /* Updated to match the palette */
 }
+
 .form-style form input:focus, form textarea:focus, form select:focus {
     outline: none;
-    border-color: #2E2A2B;
-    box-shadow: 0 0 0 3px #F2E1D4;
+    border-color: #2E2A2B; /* Updated to match the palette */
+    box-shadow: 0 0 0 3px #F2E1D4; /* Updated to match the palette */
 }
 
 .form-style input[type="checkbox"] {
     width: 1.25rem;
     height: 1.25rem;
     padding: 0;
-    border: 2px solid #323232;
+    border: 2px solid #A67C6D; /* Updated to match the palette */
     border-radius: 0.375rem;
-    background-color: rgb(67, 67, 67);
+    background-color: #4B3D3D; /* Updated to match the palette */
     cursor: pointer;
     position: relative;
     appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
 }
 
 .form-style input[type="checkbox"]:checked {
-    background-color: #F2E1D4;
-    border-color: #2E2A2B;
+    background-color: #F2E1D4; /* Updated to match the palette */
+    border-color: #2E2A2B; /* Updated to match the palette */
 }
 
 .form-style input[type="checkbox"]:checked::after {
@@ -35,13 +36,13 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: rgb(22, 26, 36);
+    color: #2E2A2B; /* Updated to match the palette */
     font-weight: bold;
     font-size: 0.875rem;
 }
 
 .form-style input[type="checkbox"]:focus {
     outline: none;
-    border-color: rgb(88, 57, 9);
+    border-color: #A67C6D; /* Updated to match the palette */
     box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
 }

@@ -18,7 +18,7 @@
         
         <!-- Loading State -->
         <div id="loading-state" class="bg-[#4B3D3D] rounded-lg border border-[#D9C6B2] p-12 text-center">
-            <svg class="animate-spin h-8 w-8 text-green-600 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg class="animate-spin h-8 w-8 text-[#A67C6D] inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
             </svg>
@@ -54,7 +54,7 @@
 
             <!-- Content -->
             <div class="p-6 sm:p-8">
-                <div class="prose prose-lg max-w-none text-gray-300">
+                <div class="prose prose-lg max-w-none text-[#D9C6B2]">
                     <div id="article-description" class="leading-relaxed whitespace-pre-line text-base sm:text-lg"></div>
                 </div>
             </div>
@@ -99,9 +99,9 @@ function showState(state) {
 // Get readable category name
 function getCategoryLabel(categoryCode) {
     const categoryMapping = {
-        Clothing : 'Clothing',
-        Shoes : 'Shoes',
-        Tools : 'Tools',
+        Clothing: 'Clothing',
+        Shoes: 'Shoes',
+        Tools: 'Tools',
     };
     return categoryMapping[categoryCode] || categoryCode;
 }
@@ -124,7 +124,7 @@ function renderArticle(prod) {
     // Featured badge
     if (prod.is_featured) {
         const featuredBadge = document.createElement('span');
-        featuredBadge.className = 'inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-yellow-100 text-yellow-800';
+        featuredBadge.className = 'inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-[#A67C6D] text-white';
         featuredBadge.textContent = 'Featured';
         badgesContainer.appendChild(featuredBadge);
     }

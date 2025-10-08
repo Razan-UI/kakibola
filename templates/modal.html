@@ -1,13 +1,11 @@
 <!-- Modal -->
 <div id="crudModal" class="hidden fixed inset-0 z-50 w-full flex items-center justify-center bg-[#2E2A2B] bg-opacity-90">
-  <div id="crudModalContent" class="bg-[#4B3D3D] rounded-lg shadow-lg w-5/6 sm:w-3/5 md:w-1/2 lg:w-2/5 xl:w-1/3 max-h-screen overflow-y-auto">
+  <div id="crudModalContent" class="bg-[#4B3D3D] rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto relative">
     <!-- Modal header -->
     <div class="flex items-center justify-between p-4 border-b border-[#A67C6D]">
-      <div>
-        <h3 class="text-xl font-semibold text-[#F2E1D4]">
-          Add New Product
-        </h3>
-        <p class="text-sm text-[#D9C6B2] mt-1">Publish a product for everyone to see!</p>
+      <div id="modalHeader">
+        <h3 id="modalTitle" class="text-xl font-semibold text-[#F2E1D4]"></h3>
+        <p id="modalSubtitle" class="text-sm text-[#D9C6B2] mt-1"></p>
       </div>
       <button type="button" class="text-[#D9C6B2] bg-transparent hover:bg-[#A67C6D] hover:text-white rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" onclick="hideModal()">
         <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -17,58 +15,92 @@
       </button>
     </div>
     <!-- Modal body -->
-    <div class="px-6 py-4 space-y-6 form-style">
-      <form id="prodForm">
-        <div class="mb-4">
-          <label for="title" class="block text-sm font-medium text-[#F2E1D4]">Title</label>
-          <input type="text" id="title" name="title" class="mt-1 block w-full border border-[#A67C6D] bg-[#4B3D3D] text-[#F2E1D4] rounded-md px-3 py-2" placeholder="Enter Product Name" required>
-        </div>
-        <div class="mb-4">
-          <label for="price" class="block text-sm font-medium text-[#F2E1D4]">Price</label>
-          <textarea id="price" name="price" rows="1" class="mt-1 block w-full border border-[#A67C6D] bg-[#4B3D3D] text-[#F2E1D4] rounded-md px-3 py-2" placeholder="Enter Product Price" required></textarea>
-        </div>
-        <div class="mb-4">
-          <label for="description" class="block text-sm font-medium text-[#F2E1D4]">Content</label>
-          <textarea id="description" name="description" rows="3" class="mt-1 block w-full border border-[#A67C6D] bg-[#4B3D3D] text-[#F2E1D4] rounded-md px-3 py-2" placeholder="Enter Product Description" required></textarea>
-        </div>
-        <div class="mb-4">
-          <label for="category" class="block text-sm font-medium text-[#F2E1D4]">Category</label>
-          <select id="category" name="category" class="mt-1 block w-full border border-[#A67C6D] bg-[#4B3D3D] text-[#F2E1D4] rounded-md px-3 py-2" required>
-            <option value="">Choose a category</option>
-            <option value="Clothing">Clothing</option>
-            <option value="Shoes">Shoes</option>
-            <option value="Tools">Tools</option>
-          </select>
-        </div>
-        <div class="mb-4">
-          <label for="thumbnail" class="block text-sm font-medium text-[#F2E1D4]">Thumbnail URL</label>
-          <input type="url" id="thumbnail" name="thumbnail" class="mt-1 block w-full border border-[#A67C6D] bg-[#4B3D3D] text-[#F2E1D4] rounded-md px-3 py-2" placeholder="https://example.com/image.jpg">
-        </div>
-        <div class="mb-4">
-          <div class="flex items-center">
-            <input id="is_featured" name="is_featured" type="checkbox" class="w-4 h-4 text-[#A67C6D] bg-gray-100 border-[#A67C6D] rounded">
-            <label for="is_featured" class="ml-2 text-sm font-medium text-[#F2E1D4]">Featured Product</label>
-          </div>
-        </div>
-      </form>
-    </div>
+    <div id="modalBody" class="px-6 py-4 space-y-6 form-style"></div>
     <!-- Modal footer -->
-    <div class="flex flex-col sm:flex-row gap-4 p-6 border-t border-[#A67C6D] rounded-b">
-      <button type="button" id="cancelButton" class="order-2 sm:order-1 px-6 py-3 border border-[#A67C6D] text-[#F2E1D4] rounded-md font-medium hover:bg-[#A67C6D] hover:text-white transition-colors text-center" onclick="hideModal()">Cancel</button>
-      <button type="submit" id="submitProduct" form="prodForm" class="order-1 sm:order-2 flex-1 bg-[#A67C6D] text-white px-6 py-3 rounded-md font-medium hover:bg-[#A67C6D] transition-colors">Publish Producut</button>
-    </div>
+    <div id="modalFooter" class="flex flex-col sm:flex-row gap-4 p-6 border-t border-[#A67C6D] rounded-b"></div>
   </div>
 </div>
 <script>
-  function showModal() {
+  let currentMode = '';
+  let currentProductId = null;
+
+  function openModal(mode, productId = null) {
+      currentMode = mode;
+      currentProductId = productId;
       const modal = document.getElementById('crudModal');
       const modalContent = document.getElementById('crudModalContent');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalSubtitle = document.getElementById('modalSubtitle');
+      const modalBody = document.getElementById('modalBody');
+      const modalFooter = document.getElementById('modalFooter');
 
-      modal.classList.remove('hidden'); 
+      modalBody.innerHTML = '';
+      modalFooter.innerHTML = '';
+
+      if (mode === 'add') {
+          modalTitle.textContent = 'Add New Product';
+          modalSubtitle.textContent = 'Publish a product for everyone to see!';
+          modalBody.innerHTML = `
+              <form id="prodForm">
+                  <div class="mb-4">
+                      <label for="name" class="block text-sm font-medium text-[#F2E1D4]">Name</label>
+                      <input type="text" id="name" name="name" class="mt-1 block w-full border border-[#A67C6D] bg-[#4B3D3D] text-[#F2E1D4] rounded-md px-3 py-2" placeholder="Enter Product Name" required>
+                  </div>
+                  <div class="mb-4">
+                      <label for="price" class="block text-sm font-medium text-[#F2E1D4]">Price</label>
+                      <input type="number" id="price" name="price" class="mt-1 block w-full border border-[#A67C6D] bg-[#4B3D3D] text-[#F2E1D4] rounded-md px-3 py-2" placeholder="Enter Product Price" required>
+                  </div>
+                  <div class="mb-4">
+                      <label for="description" class="block text-sm font-medium text-[#F2E1D4]">Description</label>
+                      <textarea id="description" name="description" rows="3" class="mt-1 block w-full border border-[#A67C6D] bg-[#4B3D3D] text-[#F2E1D4] rounded-md px-3 py-2" placeholder="Enter Product Description" required></textarea>
+                  </div>
+                  <div class="mb-4">
+                      <label for="category" class="block text-sm font-medium text-[#F2E1D4]">Category</label>
+                      <select id="category" name="category" class="mt-1 block w-full border border-[#A67C6D] bg-[#4B3D3D] text-[#F2E1D4] rounded-md px-3 py-2" required>
+                          <option value="">Choose a category</option>
+                          <option value="Clothing">Clothing</option>
+                          <option value="Shoes">Shoes</option>
+                          <option value="Tools">Tools</option>
+                      </select>
+                  </div>
+                  <div class="mb-4">
+                      <label for="thumbnail" class="block text-sm font-medium text-[#F2E1D4]">Thumbnail URL</label>
+                      <input type="url" id="thumbnail" name="thumbnail" class="mt-1 block w-full border border-[#A67C6D] bg-[#4B3D3D] text-[#F2E1D4] rounded-md px-3 py-2" placeholder="https://example.com/image.jpg">
+                  </div>
+                  <div class="mb-4">
+                      <div class="flex items-center">
+                          <input id="is_featured" name="is_featured" type="checkbox" class="w-4 h-4 text-[#A67C6D] bg-gray-100 border-[#A67C6D] rounded">
+                          <label for="is_featured" class="ml-2 text-sm font-medium text-[#F2E1D4]">Featured Product</label>
+                      </div>
+                  </div>
+              </form>
+          `;
+          modalFooter.innerHTML = `
+              <button type="button" id="cancelButton" class="order-2 sm:order-1 px-6 py-3 border border-[#A67C6D] text-[#F2E1D4] rounded-md font-medium hover:bg-[#A67C6D] hover:text-white transition-colors" onclick="hideModal()">Cancel</button>
+              <button type="submit" id="submitProduct" form="prodForm" class="order-1 sm:order-2 flex-1 bg-[#A67C6D] text-white px-6 py-3 rounded-md font-medium hover:bg-[#F2E1D4] transition-colors">Publish Product</button>
+          `;
+          document.getElementById("prodForm").addEventListener("submit", function(e) {
+              e.preventDefault();
+              addProductEntry();
+          });
+      } else if (mode === 'view') {
+          modalTitle.textContent = 'Product Details';
+          modalSubtitle.textContent = 'View product information';
+          fetchProductDetails(productId);
+          modalFooter.innerHTML = `
+              <button type="button" class="px-6 py-3 border border-[#A67C6D] text-[#F2E1D4] rounded-md font-medium hover:bg-[#A67C6D] hover:text-white transition-colors text-center" onclick="hideModal()">Close</button>
+          `;
+      } else if (mode === 'edit') {
+          modalTitle.textContent = 'Edit Product';
+          modalSubtitle.textContent = 'Update product information';
+          fetchEditForm(productId);
+      }
+
+      modal.classList.remove('hidden');
       setTimeout(() => {
-        modalContent.classList.remove('opacity-0', 'scale-95');
-        modalContent.classList.add('opacity-100', 'scale-100');
-      }, 50); 
+          modalContent.classList.remove('opacity-0', 'scale-95');
+          modalContent.classList.add('opacity-100', 'scale-100');
+      }, 50);
   }
 
   function hideModal() {
@@ -79,29 +111,105 @@
       modalContent.classList.add('opacity-0', 'scale-95');
 
       setTimeout(() => {
-        modal.classList.add('hidden');
-      }, 150); 
-  }
-   async function addProductEntry() {
-    await fetch("{% url 'main:add_product_entry_ajax' %}", {
-      method: "POST",
-      body: new FormData(document.querySelector('#prodForm')),
-    })
-
-    document.getElementById("prodForm").reset();
-    hideModal();
-      
-    // Show toast notification
-    showToast('Product added successfully!', '', 'success');
-
-    // Dispatch custom event to notify main.html about new data
-    document.dispatchEvent(new CustomEvent('prodAdded'));
-
-    return false;
+          modal.classList.add('hidden');
+      }, 150);
+      currentMode = '';
+      currentProductId = null;
   }
 
-  document.getElementById("prodForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-    addProductEntry();
-})
+  async function addProductEntry() {
+      const response = await fetch("{% url 'main:add_product_entry_ajax' %}", {
+          method: "POST",
+          body: new FormData(document.querySelector('#prodForm')),
+      });
+
+      if (response.ok) {
+          document.getElementById("prodForm").reset();
+          hideModal();
+          showToast('Product added successfully!', '', 'success');
+          document.dispatchEvent(new CustomEvent('prodAdded'));
+      } else {
+          alert('Error adding product');
+      }
+  }
+
+  async function fetchProductDetails(productId) {
+      try {
+          const url = `{% url 'main:show_json_by_id' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', productId);
+          const response = await fetch(url, {
+              headers: { 'Accept': 'application/json' },
+          });
+          if (!response.ok) {
+              throw new Error('Failed to fetch product details');
+          }
+          const data = await response.json();
+          const html = `
+              <h2 class="text-2xl font-bold text-[#2E2A2B]">${data.name}</h2>
+              <p class="text-[#2E2A2B]">Price: Rp.${data.price}.00</p>
+              <p class="text-[#2E2A2B]">Category: ${getReadableCategoryName(data.category)}</p>
+              <p class="text-[#2E2A2B]">${data.description}</p>
+              ${data.thumbnail ? `<img src="${data.thumbnail}" alt="${data.name}" class="w-full h-auto rounded-md mt-4">` : ''}
+          `;
+          document.getElementById('modalBody').innerHTML = html;
+      } catch (error) {
+          console.error('Error loading product details:', error);
+          alert('Failed to load product details');
+      }
+  }
+
+  async function fetchEditForm(productId) {
+      try {
+          const editLink = `{% url 'main:edit_product' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', productId);
+          const response = await fetch(editLink);
+          if (!response.ok) {
+              throw new Error('Failed to load edit form');
+          }
+          const html = await response.text();
+          document.getElementById('modalBody').innerHTML = html;
+          attachEditFormSubmit(editLink);
+          document.getElementById('modalFooter').innerHTML = `
+              <button type="button" class="order-2 sm:order-1 px-6 py-3 border border-[#A67C6D] text-[#F2E1D4] rounded-md font-medium hover:bg-[#A67C6D] hover:text-white transition-colors text-center" onclick="hideModal()">Cancel</button>
+              <button type="submit" form="editForm" class="order-1 sm:order-2 flex-1 bg-[#A67C6D] text-white px-6 py-3 rounded-md font-medium hover:bg-[#F2E1D4] transition-colors">Update Product</button>
+          `;
+      } catch (error) {
+          console.error('Error loading edit form:', error);
+          alert('Failed to load edit form');
+      }
+  }
+
+  async function submitEditForm(editLink) {
+      const form = document.querySelector('#editForm'); // Assume edit form has id="editForm"
+      if (!form) return;
+
+      const formData = new FormData(form);
+      const response = await fetch(editLink, {
+          method: 'POST',
+          body: formData,
+      });
+
+      if (response.ok) {
+          const contentType = response.headers.get('content-type');
+          if (contentType && contentType.includes('application/json')) {
+              hideModal();
+              fetchProductFromServer();
+              showToast ? showToast('Product updated successfully!', '', 'success') : alert('Product updated successfully!');
+          } else {
+              const html = await response.text();
+              document.getElementById('modalBody').innerHTML = html;
+              attachEditFormSubmit(editLink);
+          }
+      } else {
+          alert('Error updating product');
+      }
+  }
+
+  function attachEditFormSubmit(editLink) {
+      const form = document.querySelector('#editForm');
+      if (form) {
+          form.addEventListener('submit', function(e) {
+              e.preventDefault();
+              submitEditForm(editLink);
+          });
+      }
+  }
 </script>

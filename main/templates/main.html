@@ -17,7 +17,7 @@
     </div>
 
     <!-- Button to open modal -->
-    <button onclick="showModal()" class="inline-flex items-center px-4 py-2 bg-[#A67C6D] text-white font-semibold outline outline-2 outline-[#2E2A2B] outline-offset-[-1px] rounded-md hover:bg-[#F2E1D4] hover:text-black transition-colors mb-4">
+    <button onclick="openModal('add')" class="inline-flex items-center px-4 py-2 bg-[#A67C6D] text-white font-semibold outline outline-2 outline-[#2E2A2B] outline-offset-[-1px] rounded-md hover:bg-[#F2E1D4] hover:text-black transition-colors mb-4">
       Add New Product
     </button>
 
@@ -60,7 +60,7 @@
       </div>
       <h3 class="text-lg font-medium text-[#D9C6B2] mb-2">No products found</h3>
       <p class="text-[#F2E1D4] mb-6">Be the first to get access to exclusive football-adjacent products!</p>
-      <a href="{% url 'main:add_product' %}" class="inline-flex items-center px-4 py-2 bg-[#A67C6D] text-white rounded-md hover:bg-[#F2E1D4] hover:text-black transition-colors">
+      <a onclick="openModal('add')" class="cursor-pointer inline-flex items-center px-4 py-2 bg-[#A67C6D] text-white rounded-md hover:bg-[#F2E1D4] hover:text-black transition-colors">
         Add Product
       </a>
     </div>
@@ -72,6 +72,7 @@
 const PRODUCT_API_ENDPOINT = "{% url 'main:show_json' %}";
 const CURRENT_USER_ID = "{{user.id|default_if_none:'' }}";
 console.log(CURRENT_USER_ID)
+
 
 // DOM Elements
 const loadingSpinner = document.getElementById('loading');
@@ -126,10 +127,6 @@ function buildProductCardElement(prodItem) {
   const articleElement = document.createElement('article');
   articleElement.className = 'bg-[#D9C6B2] rounded-lg border border-[#2E2A2B] hover:shadow-lg transition-shadow duration-300 overflow-hidden flex flex-col h-full';
 
-  const detailLink = `{% url 'main:show_product' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', prodItem.id);
-  const editLink = `{% url 'main:edit_product' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', prodItem.id);
-  const deleteLink = `{% url 'main:delete_product' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', prodItem.id);
-  
   const categoryLabel = getReadableCategoryName(prodItem.category);
   const isFeatured = prodItem.is_featured;
 
@@ -145,7 +142,7 @@ function buildProductCardElement(prodItem) {
 
   const editDeleteButtons = CURRENT_USER_ID && (Number(CURRENT_USER_ID) === Number(prodItem.user_id) || CURRENT_USER_ID == 3)
     ? `<div class='flex space-x-2'>
-        <a href='${editLink}' class='text-gray-600 hover:text-gray-700 text-sm transition-colors'>Edit</a>
+        <a onclick='openModal("edit", "${prodItem.id}")' class='cursor-pointer text-gray-600 hover:text-gray-700 text-sm transition-colors'>Edit</a>
         <a class='text-red-600 hover:text-red-700 text-sm transition-colors cursor-pointer' onclick='deleteProduct("${prodItem.id}")'>Delete</a>
       </div>`
     : '';
@@ -162,14 +159,14 @@ function buildProductCardElement(prodItem) {
     </div>
     <div class="p-5 flex flex-col flex-1">
       <h3 class="text-lg font-semibold text-[#2E2A2B] mb-3 line-clamp-2 leading-tight">
-        <a href="${detailLink}" class="hover:text-[#A67C6D] transition-colors">${prodItem.name}</a>
+        <a onclick='openModal("view", "${prodItem.id}")' class="cursor-pointer hover:text-[#A67C6D] transition-colors">${prodItem.name}</a>
       </h3>
       <h4 class="text-lg font-semibold text-gray-900 mb-3 line-clamp-2 leading-tight">
-        <a href="${detailLink}" class="hover:text-green-600 transition-colors"> Rp.${prodItem.price}.00</a>
+        Rp.${prodItem.price}.00
       </h4>
       <p class="text-[#2E2A2B] text-sm leading-relaxed line-clamp-3 mb-4">${prodItem.description}</p>
       <div class="pt-4 border-t border-[#4B3D3D] flex items-center justify-between">
-        <a href="${detailLink}" class="text-[#A67C6D] hover:text-[#2E2A2B] font-medium text-sm transition-colors">Read more</a>
+        <a onclick='openModal("view", "${prodItem.id}")' class="cursor-pointer text-[#A67C6D] hover:text-[#2E2A2B] font-medium text-sm transition-colors">Read more</a>
         ${editDeleteButtons}
       </div>
     </div>
@@ -232,6 +229,7 @@ async function deleteProduct(productId) {
         return;
     }
 
+    // Get CSRF token from cookies
     const csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken='))
         ? document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1]
         : null;
@@ -245,7 +243,9 @@ async function deleteProduct(productId) {
     });
 
     if (response.ok) {
+        // Show success (replace showToast if not defined)
         showToast ? showToast('Product deleted successfully!', '', 'success') : alert('Product deleted successfully!');
+        // Refresh the product list without page reload
         fetchProductFromServer();
     } else {
         const errorData = await response.json();
