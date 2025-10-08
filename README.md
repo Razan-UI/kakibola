@@ -387,4 +387,21 @@ TUGAS 5:
     
     [Color Palette is based off of dark-academia, mungkin kurang suitable]
  
+TUGAS 6:
+    1) Apa perbedaan antara synchronous request dan asynchronous request?
+    Ans: Perbedaan utama dari synchronous dan asynchronous adalah bagaimana kedua request tersebut memproses suatu operasi. Synchronous Request akan menjalankan suatu operasi secara sekuensial, dari segi webdev, client harus menunggu respons balik dari server sebelum melakukan operasi selanjutnya. Di sisi lain, asynchronous dapat mengeksekusi beberapa operasi tanpa menunggu respons dari server sehingga UX terasa lebih mulus.
 
+    2)Bagaimana AJAX bekerja di Django (alur request–response)?
+    Ans: AJAX memungkinkan suatu website untuk memuat data baru tanpa melakukan Refresh Page. 
+    > JS/Client mengirim permintaan ke server via fetch atau method yang mirip
+    > Request akan dihandle di views.py dan akan mengembalikan respons (bisa httpresponse,jsonresponse ,dll)
+    > respons diterima client di browser dan UI/element web akan diupdate
+
+    3)Apa keuntungan menggunakan AJAX dibandingkan render biasa di Django?
+    Ans: Jika menggunakan AJAX, website tidak perlu memerlukan manual refresh atau redirects karena data akan diload di client secara asynchronous sehingga website akan terasa lebih responsif dan cepat. 
+
+    4) Bagaimana cara memastikan keamanan saat menggunakan AJAX untuk fitur Login dan Register di Django?
+    Ans: Mengimplementasikan sanitasi input, dalam kasus tutorial, menggunakan strip_tags agar mencegah serangan XSS
+
+    5)Bagaimana AJAX mempengaruhi pengalaman pengguna (User Experience) pada website?
+    Ans: Seperti dijelaskan sebelumnya, unsur-unsur UI akan menjadi lebih cepat karena client tidak perlu menunggu respons lanjut dari server ketika berinteraksi dengan website, sehingga akan terasa lebih responsif.
