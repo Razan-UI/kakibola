@@ -13,12 +13,13 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 
+
 @csrf_exempt
 @require_POST
 def add_product_entry_ajax(request):
     title = request.POST.get("title")
     price = request.POST.get("price")
-    content = request.POST.get("content")
+    content = request.POST.get("description")
     category = request.POST.get("category")
     thumbnail = request.POST.get("thumbnail")
     is_featured = request.POST.get("is_featured") == 'on'  # checkbox handling
@@ -177,6 +178,7 @@ def edit_product(request, id):
     }
 
     return render(request, "edit_product.html", context)
+
 
 def delete_product(request, id):
     prod = get_object_or_404(Product, pk=id)

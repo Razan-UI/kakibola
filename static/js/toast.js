@@ -7,21 +7,22 @@ function showToast(title, message, type = 'normal', duration = 3000) {
 
     // Remove all type classes first
     toastComponent.classList.remove(
-        'bg-red-50', 'border-red-500', 'text-red-600',
-        'bg-green-50', 'border-green-500', 'text-green-600',
-        'bg-white', 'border-gray-300', 'text-gray-800'
+        'bg-dark-color', 'border-dark-color', 'text-dark-color',
+        'bg-success-color', 'border-success-color', 'text-success-color',
+        'bg-error-color', 'border-error-color', 'text-error-color',
+        'bg-neutral-color', 'border-neutral-color', 'text-neutral-color'
     );
 
     // Set type styles and icon
     if (type === 'success') {
-        toastComponent.classList.add('bg-green-50', 'border-green-500', 'text-green-600');
-        toastComponent.style.border = '1px solid #22c55e';
+        toastComponent.classList.add('bg-[#A67C6D]', 'border-[#A67C6D]', 'text-[#2E2A2B]');
+        toastComponent.style.border = '1px solid #A67C6D';
     } else if (type === 'error') {
-        toastComponent.classList.add('bg-red-50', 'border-red-500', 'text-red-600');
-        toastComponent.style.border = '1px solid #ef4444';
-    } else {
-        toastComponent.classList.add('bg-white', 'border-gray-300', 'text-gray-800');
-        toastComponent.style.border = '1px solid #d1d5db';
+        toastComponent.classList.add('bg-[#F2E1D4]', 'border-[#F2E1D4]', 'text-[#4B3D3D]');
+        toastComponent.style.border = '1px solid #F2E1D4';
+    } else { // neutral
+        toastComponent.classList.add('bg-[#D9C6B2]', 'border-[#D9C6B2]', 'text-[#2E2A2B]');
+        toastComponent.style.border = '1px solid #D9C6B2';
     }
 
     toastTitle.textContent = title;
