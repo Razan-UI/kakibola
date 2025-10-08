@@ -1,0 +1,102 @@
+<!-- Modal -->
+<div id="crudModal" class="hidden fixed inset-0 z-50 w-full flex items-center justify-center bg-[#2E2A2B] bg-opacity-90">
+  <div id="crudModalContent" class="bg-[#4B3D3D] rounded-lg shadow-lg w-5/6 sm:w-3/5 md:w-1/2 lg:w-2/5 xl:w-1/3 max-h-screen overflow-y-auto">
+    <!-- Modal header -->
+    <div class="flex items-center justify-between p-4 border-b border-[#A67C6D]">
+      <div>
+        <h3 class="text-xl font-semibold text-[#F2E1D4]">
+          Add New Product
+        </h3>
+        <p class="text-sm text-[#D9C6B2] mt-1">Publish a product for everyone to see!</p>
+      </div>
+      <button type="button" class="text-[#D9C6B2] bg-transparent hover:bg-[#A67C6D] hover:text-white rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" onclick="hideModal()">
+        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+        </svg>
+        <span class="sr-only">Close modal</span>
+      </button>
+    </div>
+    <!-- Modal body -->
+    <div class="px-6 py-4 space-y-6 form-style">
+      <form id="newsForm">
+        <div class="mb-4">
+          <label for="title" class="block text-sm font-medium text-[#F2E1D4]">Title</label>
+          <input type="text" id="title" name="title" class="mt-1 block w-full border border-[#A67C6D] bg-[#4B3D3D] text-[#F2E1D4] rounded-md px-3 py-2" placeholder="Enter Product Name" required>
+        </div>
+        <div class="mb-4">
+          <label for="price" class="block text-sm font-medium text-[#F2E1D4]">Price</label>
+          <textarea id="price" name="price" rows="1" class="mt-1 block w-full border border-[#A67C6D] bg-[#4B3D3D] text-[#F2E1D4] rounded-md px-3 py-2" placeholder="Enter Product Price" required></textarea>
+        </div>
+        <div class="mb-4">
+          <label for="content" class="block text-sm font-medium text-[#F2E1D4]">Content</label>
+          <textarea id="content" name="content" rows="3" class="mt-1 block w-full border border-[#A67C6D] bg-[#4B3D3D] text-[#F2E1D4] rounded-md px-3 py-2" placeholder="Enter Product Description" required></textarea>
+        </div>
+        <div class="mb-4">
+          <label for="category" class="block text-sm font-medium text-[#F2E1D4]">Category</label>
+          <select id="category" name="category" class="mt-1 block w-full border border-[#A67C6D] bg-[#4B3D3D] text-[#F2E1D4] rounded-md px-3 py-2" required>
+            <option value="">Choose a category</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Shoes">Shoes</option>
+            <option value="Tools">Tools</option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label for="thumbnail" class="block text-sm font-medium text-[#F2E1D4]">Thumbnail URL</label>
+          <input type="url" id="thumbnail" name="thumbnail" class="mt-1 block w-full border border-[#A67C6D] bg-[#4B3D3D] text-[#F2E1D4] rounded-md px-3 py-2" placeholder="https://example.com/image.jpg">
+        </div>
+        <div class="mb-4">
+          <div class="flex items-center">
+            <input id="is_featured" name="is_featured" type="checkbox" class="w-4 h-4 text-[#A67C6D] bg-gray-100 border-[#A67C6D] rounded">
+            <label for="is_featured" class="ml-2 text-sm font-medium text-[#F2E1D4]">Featured News</label>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- Modal footer -->
+    <div class="flex flex-col sm:flex-row gap-4 p-6 border-t border-[#A67C6D] rounded-b">
+      <button type="button" id="cancelButton" class="order-2 sm:order-1 px-6 py-3 border border-[#A67C6D] text-[#F2E1D4] rounded-md font-medium hover:bg-[#A67C6D] hover:text-white transition-colors text-center" onclick="hideModal()">Cancel</button>
+      <button type="submit" id="submitProduct" form="prodForm" class="order-1 sm:order-2 flex-1 bg-[#A67C6D] text-white px-6 py-3 rounded-md font-medium hover:bg-[#A67C6D] transition-colors">Publish Producut</button>
+    </div>
+  </div>
+</div>
+<script>
+  function showModal() {
+      const modal = document.getElementById('crudModal');
+      const modalContent = document.getElementById('crudModalContent');
+
+      modal.classList.remove('hidden'); 
+      setTimeout(() => {
+        modalContent.classList.remove('opacity-0', 'scale-95');
+        modalContent.classList.add('opacity-100', 'scale-100');
+      }, 50); 
+  }
+
+  function hideModal() {
+      const modal = document.getElementById('crudModal');
+      const modalContent = document.getElementById('crudModalContent');
+
+      modalContent.classList.remove('opacity-100', 'scale-100');
+      modalContent.classList.add('opacity-0', 'scale-95');
+
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 150); 
+  }
+   async function addProductEntry() {
+    await fetch("{% url 'main:add_product_entry_ajax' %}", {
+      method: "POST",
+      body: new FormData(document.querySelector('#prodForm')),
+    })
+
+    document.getElementById("prodForm").reset();
+    hideModal();
+      
+    // Show toast notification
+    showToast('Product added successfully!', '', 'success');
+
+    // Dispatch custom event to notify main.html about new data
+    document.dispatchEvent(new CustomEvent('prodAdded'));
+
+    return false;
+  }
+</script>

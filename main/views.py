@@ -9,7 +9,33 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import datetime
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
+
+@csrf_exempt
+@require_POST
+def add_product_entry_ajax(request):
+    title = request.POST.get("title")
+    price = request.POST.get("price")
+    content = request.POST.get("content")
+    category = request.POST.get("category")
+    thumbnail = request.POST.get("thumbnail")
+    is_featured = request.POST.get("is_featured") == 'on'  # checkbox handling
+    user = request.user
+
+    new_prod = Product(
+        name=title, 
+        description=content,
+        price = price,
+        category=category,
+        thumbnail=thumbnail,
+        is_featured=is_featured,
+        user=user
+    )
+    new_prod.save()
+
+    return HttpResponse(b"CREATED", status=201)
 
 def logout_user(request):
     logout(request)
