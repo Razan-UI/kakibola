@@ -17,17 +17,17 @@ from django.views.decorators.http import require_POST
 @csrf_exempt
 @require_POST
 def add_product_entry_ajax(request):
-    title = request.POST.get("title")
+    name = request.POST.get("name")
     price = request.POST.get("price")
-    content = request.POST.get("description")
+    description = request.POST.get("description")
     category = request.POST.get("category")
     thumbnail = request.POST.get("thumbnail")
     is_featured = request.POST.get("is_featured") == 'on'  # checkbox handling
     user = request.user
 
     new_prod = Product(
-        name=title, 
-        description=content,
+        name=name, 
+        description=description,
         price = price,
         category=category,
         thumbnail=thumbnail,
