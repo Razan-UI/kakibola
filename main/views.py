@@ -184,13 +184,3 @@ def delete_product(request, id):
     prod = get_object_or_404(Product, pk=id)
     prod.delete()
     return HttpResponseRedirect(reverse('main:show_main'))
-
-# def add_employee(request):
-#     employee = Employee.objects.create(name = "razan", age = 19, persona = "persona5")
-#     context = {
-#         'nama' : employee.name,
-#         'umur' : employee.age,
-#         'persona' : employee.persona
-#     }
-#     return render(request,"main.html", context)
-    
