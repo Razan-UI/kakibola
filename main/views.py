@@ -11,8 +11,81 @@ import datetime
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+import requests
 
+from django.utils.html import strip_tags
+import json
 
+@csrf_exempt
+def create_product_flutter(request):
+    if request.method == 'POST':
+        try:
+            # Check if user is authenticated
+            if not request.user.is_authenticated:
+                return JsonResponse({
+                    "status": "error",
+                    "message": "User not authenticated. Please login first."
+                }, status=401)
+            
+            data = json.loads(request.body)
+            name = strip_tags(data.get("name", ""))
+            description = strip_tags(data.get("description", ""))
+            price = data.get("price", "")
+            category = data.get("category", "")
+            thumbnail = data.get("thumbnail", "")
+            is_featured = data.get("is_featured", False)
+            
+            # Get the authenticated user
+            user = request.user
+            
+            new_product = Product(
+                name=name, 
+                description=description,
+                price=price,
+                category=category,
+                thumbnail=thumbnail,
+                is_featured=is_featured,
+                user=user
+            )
+            new_product.save()
+            
+            return JsonResponse({
+                "status": "success",
+                "message": "Product created successfully!"
+            }, status=200)
+        except json.JSONDecodeError:
+            return JsonResponse({
+                "status": "error",
+                "message": "Invalid JSON format"
+            }, status=400)
+        except Exception as e:
+            return JsonResponse({
+                "status": "error",
+                "message": str(e)
+            }, status=500)
+    else:
+        return JsonResponse({
+            "status": "error",
+            "message": "Method not allowed"
+        }, status=405)
+
+def proxy_image(request):
+    image_url = request.GET.get('url')
+    if not image_url:
+        return HttpResponse('No URL provided', status=400)
+    
+    try:
+        # Fetch image from external source
+        response = requests.get(image_url, timeout=10)
+        response.raise_for_status()
+        
+        # Return the image with proper content type
+        return HttpResponse(
+            response.content,
+            content_type=response.headers.get('Content-Type', 'image/jpeg')
+        )
+    except requests.RequestException as e:
+        return HttpResponse(f'Error fetching image: {str(e)}', status=500)
 
 @csrf_exempt
 @require_POST
@@ -82,7 +155,7 @@ def show_main(request):
         prod_list = Product.objects.filter(user=request.user)
 
     context = {
-        'title': 'Solcaster United',
+        'name': 'Solcaster United',
         'npm' : '2406496233',
         'name': 'Razan Muhammad Salim',
         'class': 'PBP B',
